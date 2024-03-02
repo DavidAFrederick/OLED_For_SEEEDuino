@@ -51,11 +51,11 @@ void loop() {
 
   readSensors();
 
-  // - TEMP Setting
-  sensorTwoState = 1;  // 1 = not present
-  sensorThreeState = 0;
-  sensorFourState = 0;
-  //
+  // // - TEMP Setting
+  // sensorTwoState = 1;  // 1 = not present
+  // sensorThreeState = 0;
+  // sensorFourState = 0;
+  // //
 
   displayLengthPosition();
 
