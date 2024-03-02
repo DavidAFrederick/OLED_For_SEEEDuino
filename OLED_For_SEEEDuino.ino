@@ -25,6 +25,9 @@ int sensorTwoState = 0;
 int sensorThreeState = 0;
 int sensorFourState = 0;
 
+int sensorPin = A7; 
+int sensorValue = 0;
+
 //========================================================================
 void setup() {
   Serial.begin(9600);
@@ -45,10 +48,21 @@ void setup() {
   display.clearDisplay();
   displayText("Initializing");  // Draw 'stylized' characters
   delay(1000);
+
+// analogReference(AR_DEFAULT);    // 3.3 V
+// analogReference(AR_INTERNAL1V0);
+// analogReference(AR_INTERNAL2V23);
+analogReference(AR_INTERNAL1V65);
+
 }
 //========================================================================
 void loop() {
 
+  // read the value from the sensor:
+  sensorValue = analogRead(sensorPin);
+  Serial.println(sensorValue);
+  displayVoltage(sensorValue);
+  
   readSensors();
 
   // // - TEMP Setting
@@ -86,6 +100,18 @@ void displayPosition(int position) {
   display.println(position);
   display.display();
 }
+
+void displayVoltage(int voltageToDisplay) {
+  display.clearDisplay();
+
+  display.setTextSize(2);               // Normal 1:1 pixel scale
+  display.setTextColor(SSD1306_WHITE);  // Draw white text
+  display.setCursor(0, 16);              // Start at top-left corner
+  display.println( voltageToDisplay);
+  display.display();
+}
+
+
 
 void displayDetectionStatus() {
   if (sensorOneState == 1) {
