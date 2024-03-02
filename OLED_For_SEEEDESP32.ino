@@ -11,32 +11,12 @@
 #define SCREEN_ADDRESS 0x3C
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
-const int sensor_one_pin = 1;
-const int sensor_two_pin = 2;
-const int sensor_three_pin = 3;
-// Pin 4 is used for I2C. SDA. (DATA)
-// Pin 6 is used for I2C. SCL. (CLOCK)
-const int sensor_four_pin = 6;
-const int ledPin = 13;
-
-
-int sensorOneState = 0;
-int sensorTwoState = 0;
-int sensorThreeState = 0;
-int sensorFourState = 0;
-
-int sensorPin = A7; 
+int sensorPin = A1; 
 int sensorValue = 0;
 
 //========================================================================
 void setup() {
   Serial.begin(9600);
-
-  // initialize the pushbutton pin as an input:
-  pinMode(sensor_one_pin, INPUT);
-  pinMode(sensor_two_pin, INPUT);
-  pinMode(sensor_three_pin, INPUT);
-  pinMode(sensor_four_pin, INPUT);
 
   // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
   if (!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
@@ -52,7 +32,7 @@ void setup() {
 // analogReference(AR_DEFAULT);    // 3.3 V
 // analogReference(AR_INTERNAL1V0);
 // analogReference(AR_INTERNAL2V23);
-analogReference(AR_INTERNAL1V65);
+// analogReference(AR_INTERNAL1V65);
 
 }
 //========================================================================
@@ -62,18 +42,8 @@ void loop() {
   sensorValue = analogRead(sensorPin);
   Serial.println(sensorValue);
   displayVoltage(sensorValue);
-  
-  readSensors();
 
-  // // - TEMP Setting
-  // sensorTwoState = 1;  // 1 = not present
-  // sensorThreeState = 0;
-  // sensorFourState = 0;
-  // //
-
-  displayLengthPosition();
-
-  // displayDetectionStatus();
+  // displayLengthPosition();
 
   delay(10);
 }
@@ -113,27 +83,28 @@ void displayVoltage(int voltageToDisplay) {
 
 
 
-void displayDetectionStatus() {
-  if (sensorOneState == 1) {
-    digitalWrite(ledPin, HIGH);  // Turn LED On
-    displayText("NOT Detected");
-  } else {
-    digitalWrite(ledPin, LOW);  // Yurn LED Off
-    displayText("Detected");
-  }
-}
+// void displayDetectionStatus() {
+//   if (sensorOneState == 1) {
+//     digitalWrite(ledPin, HIGH);  // Turn LED On
+//     displayText("NOT Detected");
+//   } else {
+//     digitalWrite(ledPin, LOW);  // Yurn LED Off
+//     displayText("Detected");
+//   }
+// }
 
-void displayLengthPosition() {
-  int distance_position = sensorFourState * 8 + sensorThreeState * 4 + sensorTwoState * 2 + sensorOneState;
+void displayLengthPosition(int numberToDisplay) {
+  // int distance_position = 10;
+  // sensorFourState * 8 + sensorThreeState * 4 + sensorTwoState * 2 + sensorOneState;
 
   // displayText("Position: ");
-  displayPosition(distance_position);
+  displayPosition(numberToDisplay);
 }
 
-void readSensors() {
-  sensorOneState = ! digitalRead(sensor_one_pin);
-  sensorTwoState = ! digitalRead(sensor_two_pin);
-  sensorThreeState = ! digitalRead(sensor_three_pin);
-  sensorFourState = ! digitalRead(sensor_four_pin);
-}
+// void readSensors() {
+//   sensorOneState = ! digitalRead(sensor_one_pin);
+//   sensorTwoState = ! digitalRead(sensor_two_pin);
+//   sensorThreeState = ! digitalRead(sensor_three_pin);
+//   sensorFourState = ! digitalRead(sensor_four_pin);
+// }
 //========================================================================
